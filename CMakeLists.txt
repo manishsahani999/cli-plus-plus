@@ -6,12 +6,14 @@ project(fryday)
 
 set(CMAKE_CXX_STANDARD 17)
 
-include_directories(${PROJECT_SOURCE_DIR}/includes)
+include_directories(
+    ${PROJECT_SOURCE_DIR}/includes
+    /usr/local/include
+)
 
 # Add a library to this build. The name of the library is MyLibrary and it
 # consists of only the MyLibrary.cpp file
 add_executable(
     fryday 
     src/main.cpp
-    src/commander.cpp
 )

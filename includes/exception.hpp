@@ -12,6 +12,16 @@
 
 namespace cli
 {
+    namespace Static
+    {
+        static std::string VERSION = "version";
+
+        namespace ExceptionStr
+        {
+            static std::string OPTION_FLAG_EMPTY = "Option flag cannot be empty, Provided an empty string.";
+        }
+    }
+
     struct Exception
     {
         const std::string str;
