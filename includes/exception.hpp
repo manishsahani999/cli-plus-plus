@@ -5,12 +5,12 @@
 //
 //===----------------------------------------------------------------------===//
 
-#ifndef FRYDAY_CMD_LIB_EXCEPTION_HPP
-#define FRYDAY_CMD_LIB_EXCEPTION_HPP
+#ifndef CLI_LIB_EXCEPTION_HPP
+#define CLI_LIB_EXCEPTION_HPP
 
 #include <string>
 
-namespace Fryday
+namespace cli
 {
     struct Exception
     {

@@ -4,19 +4,19 @@
 #include "commander.hpp"
 #include "exception.hpp"
 
-using namespace Fryday;
+using namespace cli;
 
-void Fryday::Commander::version(const std::string version) noexcept
+void cli::Commander::version(const std::string version) noexcept
 {
     this->properties["version"] = version;
 }
 
-void Fryday::Commander::option(const std::string flag, const std::string description)
+void cli::Commander::option(const std::string flag, const std::string description)
 {
     if (!flag.length())
-        throw Fryday::Exception("option is missing flags");
+        throw cli::Exception("option is missing flags");
 
-    Fryday::Option option{flag, description};
+    cli::Option option{flag, description};
     this->options.push_back(option);
 
     sort(this->options.begin(), this->options.end(), [](Option a, Option b) -> bool {
@@ -25,10 +25,10 @@ void Fryday::Commander::option(const std::string flag, const std::string descrip
     // printf("Setting option %s \n", options[options.size() - 1].flag.c_str());
 }
 
-void Fryday::Commander::command(const std::string cmd, const std::string description, Fryday::Action &action)
+void cli::Commander::command(const std::string cmd, const std::string description)
 {
     if (!cmd.length())
-        throw Fryday::Exception("command cannot be empty");
+        throw cli::Exception("command cannot be empty");
 
     // split the string from spaces 
     std::regex regex{R"([\s]+)"}; // split string with space 
@@ -37,15 +37,15 @@ void Fryday::Commander::command(const std::string cmd, const std::string descrip
 
     std::string key;
 
-    if (words.size() >= 1) key = words[0];
-    if (words.size() >= 2) action.m.insert({words[1], "inserted"});
-    if (words.size() >= 3) action.m.insert({words[2], "inserted"});
+    // if (words.size() >= 1) key = words[0];
+    // if (words.size() >= 2) action.m.insert({words[1], "inserted"});
+    // if (words.size() >= 3) action.m.insert({words[2], "inserted"});
 
     Command command{key, cmd, description};
     this->commands.push_back(command);
 }
 
-void Fryday::Commander::list() const noexcept
+void cli::Commander::list() const noexcept
 {
     std::cout << "\nList of available options and commands\n\n";
 
@@ -74,7 +74,7 @@ void Fryday::Commander::list() const noexcept
     std::cout << std::endl;
 }
 
-std::string Fryday::Commander::operator[](const std::string key) const noexcept
+std::string cli::Commander::operator[](const std::string key) const noexcept
 {
     auto itr = this->properties.find(key);
     if (this->properties.find(key) != this->properties.end()) 

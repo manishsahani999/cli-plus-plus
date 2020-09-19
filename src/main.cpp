@@ -3,21 +3,20 @@
 #include "exception.hpp"
 
 using namespace std;
-using namespace Fryday;
+using namespace cli;
 
 int32_t main(int argc, char *argv[])
 {
     Commander commander;
-    Action a;
 
     try
     {
         commander.version("1.0");
         commander.option("-d", "directory");
         commander.option("-f", "filename");
-        commander.command("clone <url> [path]", "clone the repository", a);
+        commander.command("clone <url> [path]", "clone the repository");
     }
-    catch (const Fryday::Exception &e)
+    catch (const cli::Exception &e)
     {
         std::cerr << e.what() << '\n';
         abort();

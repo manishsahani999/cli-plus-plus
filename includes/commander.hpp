@@ -5,15 +5,15 @@
 //
 //===----------------------------------------------------------------------===//
 
-#ifndef FRYDAY_CMD_LIB_COMMANDER_HPP
-#define FRYDAY_CMD_LIB_COMMANDER_HPP
+#ifndef CLI_COMMANDER_HPP
+#define CLI_COMMANDER_HPP
 
 #include <string>
 #include <vector>
 #include <map>
 #include "option.hpp"
 
-namespace Fryday
+namespace cli
 {
     class Commander
     {
@@ -25,7 +25,7 @@ namespace Fryday
 
         void version(const std::string version) noexcept;
         void option(const std::string flag, const std::string description);
-        void command(const std::string command, const std::string description, Action & action);
+        void command(const std::string command, const std::string description);
         void list() const noexcept;
         void parse(int argc, char *argv[]);
 
@@ -33,4 +33,4 @@ namespace Fryday
     };
 } // namespace Commander
 
-#endif // FRYDAY_CMD_LIB_COMMANDER_HPP
+#endif // CLI_COMMANDER_HPP

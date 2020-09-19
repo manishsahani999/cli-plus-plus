@@ -1,26 +1,17 @@
 
-#ifndef FRYDAY_CMD_LIB_OPTION_HPP
-#define FRYDAY_CMD_LIB_OPTION_HPP
+#ifndef CLI_LIB_OPTION_HPP
+#define CLI_LIB_OPTION_HPP
 
 #include <string>
 #include <map>
 
-namespace Fryday
+namespace cli
 {
 
     struct Option
     {
         std::string flag;
         std::string description;
-    };
-
-    struct Action
-    {
-        std::map<std::string, std::string> m;
-        std::string operator[](const std::string key) {
-            if (m.find(key) != m.end()) return m[key];
-            return "";
-        }
     };
     
     struct Command
@@ -32,4 +23,4 @@ namespace Fryday
 
 } // namespace Fryday
 
-#endif // FRYDAY_CMD_LIB_OPTION_HPP
+#endif // CLI_LIB_OPTION_HPP
