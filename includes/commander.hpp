@@ -1,7 +1,11 @@
 // -*- C++ -*-
 //===------------------------- commander.hpp ------------------------------===//
-//
-//  Part of dotfiles management tool
+//  
+//  Copyright (c) 2020 Manish sahani
+// 
+//  This program is free software: Licensed under the MIT License. you may not 
+//  use this file except in compliance with the License. You may obtain a copy 
+//  of the License at http://www.apache.org/licenses/LICENSE-2.0
 //
 //===----------------------------------------------------------------------===//
 
@@ -13,8 +17,8 @@
 #include <regex>
 #include <iomanip>
 #include <map>
-#include <Exception.hpp>
-#include <option>
+#include <exception.hpp>
+#include <option.hpp>
 #include <command.hpp>
 #include <helper.hpp>
 #include <fryday/debug.h>
@@ -102,17 +106,60 @@ void Commander::list() const noexcept
 {
     std::cout << "\nList of available options and commands\n\n";
 
-    for (auto &command : this->commands)
-    {
-        std::cout << command.first << std::endl;
-    }
+    for (auto &command : this->commands) std::cout << command.first << std::endl;
     std::cout << std::endl;
     
-    for (auto &el : this->options)
-    {
-        std::cout << el.first << std::endl;
-    }
+    for (auto &el : this->options) std::cout << el.first << std::endl;
     std::cout << std::endl;
+}
+
+/**
+ * @brief Parse the input args in the programs
+ * 
+ * @param argc 
+ * @param argv 
+ */
+void Commander::parse(int argc, char *argv[])
+{
+    std::vector<std::string> args;
+    for(int i = 1; i < argc; i++) args.push_back(std::string(argv[i]));
+
+    if (!args.size()) 
+    {
+        std::cerr << Static::ExceptionStr::PARSE_MISSING_CMD << "\n"; 
+        this->list();
+        exit(1);
+    }
+
+    if (args.size() >= 1) 
+    {
+        this->properties.insert({"command", args[0]});
+        auto it = this->commands.find(args[0]);
+        if (it == this->commands.end()) 
+        {
+            std::cerr << Static::ExceptionStr::PARSE_CMD_NOT_FOUND << std::endl;
+            exit(1);
+        }
+        // args[0];
+        Command command = it->first;
+        int argprovided = 0;
+        for(int i = 1; i < args.size(); i++) {
+            if (args[i].front() == '-') break;
+            argprovided++;
+        }
+        std::cout << argprovided << " " << command.getRequired() << "\n";
+        if (argprovided < command.getRequired()) 
+        {
+            std::cerr << "Invalid args" << std::endl;
+            std::cout << command << std::endl;
+            exit(1);
+        }
+        // for(int i = 1; i < args.size(); i++) {
+        //     if (args[i].front() == '-') break;
+        //     // this->properties.insert({command.})
+        // }
+        std::cout << command << std::endl;
+    }
 }
 
 /**

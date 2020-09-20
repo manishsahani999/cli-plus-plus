@@ -1,7 +1,12 @@
 // -*- C++ -*-
-//===--------------------------- string -----------------------------------===//
-//
+//===---------------------------- option.hpp ------------------------------===//
+//  
+//  Copyright (c) 2020 Manish sahani
 // 
+//  This program is free software: Licensed under the MIT License. you may not 
+//  use this file except in compliance with the License. You may obtain a copy 
+//  of the License at http://www.apache.org/licenses/LICENSE-2.0
+//
 //===----------------------------------------------------------------------===//
 
 #ifndef CLI_LIB_OPTION_HPP
@@ -23,7 +28,7 @@ class Option
     std::string description;
     std::string arg;
 
-    public:
+public:
     Option(std::string flag, std::string description);
     std::string getArg() const;
     void setArg(std::string str);
@@ -74,11 +79,11 @@ bool Option::operator<(const Option &option) const
 
 std::ostream& operator<<(std::ostream & os, const Option & o)
 {
-    os  << "Flag             : " << o.flag << "\n"
-        << "Readable Flag    : " << o.readable << "\n"
-        << "Arg              : " << o.arg << "\n"
-        << "Required         : " << o.required << "\n"
-        << "Description      : " << o.description << "\n\n";
+    os << "\t" << std::setw(7) 
+       << o.flag << " "
+       << (o.readable.length() ? o.readable : "\t") << std::setw(10)
+       << (o.arg.length() ? "[" + o.arg + "]" : "")   
+       << "\t" << o.description;
     return os;
 }
 
