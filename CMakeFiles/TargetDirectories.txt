@@ -1,3 +1,0 @@
-/Users/hades/Code/cpp/exp/setup/CMakeFiles/rebuild_cache.dir
-/Users/hades/Code/cpp/exp/setup/CMakeFiles/edit_cache.dir
-/Users/hades/Code/cpp/exp/setup/CMakeFiles/fryday.dir
