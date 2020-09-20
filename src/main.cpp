@@ -16,7 +16,7 @@ int32_t main(int argc, char *argv[])
         program.option("-c|--cool <name>", "with required");
         program.option("-d|--doom [party]", "optional");
         program.option("-de| --doom [party]", "errored");
-        // program.command("clone <url> [path]", "clone the repository");
+        program.command("clone <url> [path]", "clone the repository");
         program.list();
     }
     catch (const cli::Exception &e)

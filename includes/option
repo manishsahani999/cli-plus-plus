@@ -1,3 +1,8 @@
+// -*- C++ -*-
+//===--------------------------- string -----------------------------------===//
+//
+// 
+//===----------------------------------------------------------------------===//
 
 #ifndef CLI_LIB_OPTION_HPP
 #define CLI_LIB_OPTION_HPP
@@ -18,7 +23,7 @@ class Option
     std::string description;
     std::string arg;
 
-public:
+    public:
     Option(std::string flag, std::string description);
     std::string getArg() const;
     void setArg(std::string str);
@@ -38,10 +43,10 @@ Option::Option(std::string flag, std::string description)
         this->flag = tokenized[0];
     if (tokenized.size() >= 2)
     {
-        if (tokenized[0].front() == '-')
+        if (tokenized[1].front() == '-')
             this->readable = tokenized[1];
         else
-            this->setArg(tokenized[2]);
+            this->setArg(tokenized[1]);
     }
     if (tokenized.size() >= 3)
         this->setArg(tokenized[2]);
@@ -76,13 +81,6 @@ std::ostream& operator<<(std::ostream & os, const Option & o)
         << "Description      : " << o.description << "\n\n";
     return os;
 }
-
-struct Command
-{
-    std::string key;
-    std::string command;
-    std::string description;
-};
 
 } // namespace cli
 

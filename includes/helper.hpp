@@ -20,9 +20,6 @@ namespace cli
     namespace helper
     {
         std::vector<std::string> tokenize(const std::string str, const std::regex re);
-        static inline void ltrim(std::string &s);
-        static inline void rtrim(std::string &s);
-        static inline void trim(std::string &s);
 
         std::vector<std::string> tokenize(const std::string str, const std::regex re)
         {

@@ -14,7 +14,8 @@
 #include <iomanip>
 #include <map>
 #include <Exception.hpp>
-#include <Option.hpp>
+#include <option>
+#include <command.hpp>
 #include <helper.hpp>
 #include <fryday/debug.h>
 
@@ -40,7 +41,7 @@ class Commander
     |   This stores the list of all commands for the program,
     |   TODO -> update this to a faster data structure for searching 
     */
-    std::vector<Command> commands;
+    std::map<Command, std::string> commands;
 public:
     Commander(){};
 
@@ -80,48 +81,46 @@ void Commander::option(const std::string flag, const std::string description = "
     this->options.insert({Option(flag, description), ""});
 }
 
+/**
+ * @brief add a new command to the program 
+ *
+ * @param cmd 
+ * @param description
+ * @throw cli::Exception 
+ */
 void Commander::command(const std::string cmd, const std::string description)
 {
+    // check if command string is empty or not, in any case cmd must not be empty
     if (!cmd.length())
         throw Exception("command cannot be empty");
 
-    // split the string from spaces 
-    std::regex regex{R"([\s]+)"}; // split string with space 
-    std::sregex_token_iterator it{cmd.begin(), cmd.end(), regex, -1};
-    std::vector<std::string> words{it, {}};
-
-    std::string key;
-
-    // if (words.size() >= 1) key = words[0];
-    // if (words.size() >= 2) action.m.insert({words[1], "inserted"});
-    // if (words.size() >= 3) action.m.insert({words[2], "inserted"});
-
-    Command command{key, cmd, description};
-    this->commands.push_back(command);
+    // Create an coommand and insert in the global commands 
+    this->commands.insert({Command(cmd, description), ""});
 }
 
 void Commander::list() const noexcept
 {
     std::cout << "\nList of available options and commands\n\n";
 
-    // for (auto &command : this->commands)
-    // {
-    //     std::cout << "\t"
-    //               << std::left
-    //               << std::setw(15)
-    //               << command.command
-    //               << "\t"
-    //               << command.description
-    //               << '\n';
-    // }
+    for (auto &command : this->commands)
+    {
+        std::cout << command.first << std::endl;
+    }
     std::cout << std::endl;
+    
     for (auto &el : this->options)
     {
         std::cout << el.first << std::endl;
     }
-    // std::cout << std::endl;
+    std::cout << std::endl;
 }
 
+/**
+ * @brief Overload [] for Commander
+ * 
+ * @param key 
+ * @return std::string 
+ */
 std::string Commander::operator[](const std::string key) const noexcept
 {
     auto itr = this->properties.find(key);
