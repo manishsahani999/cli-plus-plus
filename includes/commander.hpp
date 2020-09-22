@@ -12,24 +12,26 @@
 #ifndef CLI_COMMANDER_HPP
 #define CLI_COMMANDER_HPP
 
-#include <cstdlib>
 #include <iostream>
 #include <string>
-#include <vector>
 #include <regex>
 #include <iomanip>
 #include <map>
-#include <exception.hpp>
-#include <option.hpp>
+#include <vector>
 #include <command.hpp>
+#include <exception.hpp>
 #include <helper.hpp>
-#include <fryday/debug.h>
+#include <option.hpp>
+#include <colors.hpp>
 
 namespace cli
 {
     
 class Commander
 {
+    // Name and description for the program 
+    std::string name, description;
+
     /**
      * @brief This stores all the properties, which are accessable by externel user
      * tho this is not directly visible to user, but can be read using over- loaded 
@@ -39,7 +41,8 @@ class Commander
 
     /**
      * @brief this store all the user defined options and their values for the 
-     * program, these values are updated when parse method is called.
+     * program, these values are updated when parse method is called, or when a ver
+     * -sion option is registered.
      */
     std::map<Option, std::string> options;
 
@@ -63,13 +66,18 @@ class Commander
 
     // Helper functions 
     void populate(int arc, char *argv[]);
+
 public:
-    Commander(){};
+    Commander(const std::string & n, const std::string & d = ""):name(n),description(d){
+        this->option("-h|--help", "Display this help message");
+    }
 
     // Commander configuration building api
-    void version(const std::string version) noexcept;
-    void option(const std::string flag, const std::string description);
-    void command(const std::string command, const std::string description);
+    void version(const std::string & version, 
+                 const std::string & flag = "-v| --version", 
+                 const std::string & description = "display programs for version");
+    void option(const std::string & flag, const std::string & description = "");
+    void command(const std::string & command, const std::string & description = "");
 
     // Commander usage api
     void parse(int argc, char *argv[]);
@@ -82,10 +90,15 @@ public:
  * @brief Update the program's version info
  * 
  * @param version 
+ * @param flag 
+ * @param description 
  */
-void Commander::version(const std::string version) noexcept
+void Commander::version(const std::string & version, 
+                        const std::string & flag, 
+                        const std::string & description) 
 {
-    this->properties.insert({Static::VERSION, version});
+    this->properties.insert({properties::VERSION, version});
+    this->option(flag, description);
 }
 
 /**
@@ -95,11 +108,10 @@ void Commander::version(const std::string version) noexcept
  * @param description 
  * @throw cli::Exception 
  */
-void Commander::option(const std::string flag, const std::string description = "")
+void Commander::option(const std::string & flag, const std::string & description)
 {
     // check if the flag is empty or not, in any case flag must not be empty
-    if (!flag.length())
-        throw Exception(Static::ExceptionStr::OPTION_FLAG_EMPTY);
+    if (!flag.length()) throw Exception(errstr::option::FLAG_EMPTY);
 
     // Create an Option and insert in the global options  
     this->options.insert({Option(flag, description), ""});
@@ -112,7 +124,7 @@ void Commander::option(const std::string flag, const std::string description = "
  * @param description
  * @throw cli::Exception 
  */
-void Commander::command(const std::string cmd, const std::string description)
+void Commander::command(const std::string & cmd, const std::string & description)
 {
     // check if command string is empty or not, in any case cmd must not be empty
     if (!cmd.length())
@@ -139,15 +151,15 @@ void Commander::parse(int argc, char *argv[])
     // This is to obey the legacy of -v and --version usage if --version of -v is 
     // provided and and this->properties has a version field then display the 
     // version
-    if (this->option_args.size() && this->properties.find(Static::VERSION) != this->properties.end()
+    if (this->option_args.size() && this->properties.find(properties::VERSION) != this->properties.end()
             && (*this->option_args.begin() == "--version" || *this->option_args.begin() == "-v" ))
     {
-        std::cout << this->properties[Static::VERSION] << std::endl;
+        std::cout << this->properties[properties::VERSION] << std::endl;
         std::exit(0);
     }
 
     // This is to obey the legacy of -h and --help usage if --version of -v 
-    if (this->option_args.size() && this->properties.find(Static::VERSION) != this->properties.end()
+    if (this->option_args.size() && this->properties.find(properties::VERSION) != this->properties.end()
             && (*this->option_args.begin() == "--help" || *this->option_args.begin() == "-h" ))
     {
         this->list();
@@ -183,13 +195,14 @@ void Commander::parse(int argc, char *argv[])
 
 void Commander::list() const noexcept
 {
-    std::cout << "\nList of available options and commands\n\n";
+    std::cout << "\n" << LEFT_PAD  << _P(this->name) << " " 
+              << this->description << "\n";
 
+    std::cout << "\nAvailable commads:\n";
     for (auto &command : this->commands) std::cout << command.first << std::endl;
-    std::cout << std::endl;
-    
+
+    std::cout << "\nAvailable options:\n";
     for (auto &el : this->options) std::cout << el.first << std::endl;
-    std::cout << std::endl;
     std::exit(0);
 }
 

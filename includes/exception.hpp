@@ -15,9 +15,28 @@
 
 namespace cli
 {
-    namespace Static
+    namespace properties
     {
         static std::string VERSION = "version";
+    }
+
+    namespace errstr
+    {
+        namespace option
+        {
+            static std::string FLAG_EMPTY = "Option flag cannot be empty, Provided an empty string.";
+        }
+
+        namespace parse
+        {
+            static std::string MISSING_CMD = "Command not provided";
+            static std::string CMD_NOT_FOUND = "Command not found";
+            static std::string CMD_MISSING_ARG = "Missing command args";
+        }
+    }
+
+    namespace Static
+    {
 
         namespace ExceptionStr
         {
@@ -30,14 +49,16 @@ namespace cli
 
     struct Exception
     {
-        const std::string str;
+        const std::string err;
+        const std::string fix;
+        const std::string log;
 
     public:
-        Exception(std::string s) : str(s) {}
-        std::string what() const
-        {
-            return str;
-        }
+        Exception(const std::string & e, 
+                  const std::string & f = "", 
+                  const std::string & l = "") : err(e), fix(f), log(l) {}
+        std::string what() const noexcept{ return err; }
+        std::string how() const noexcept{ return fix; }
     };
 
 } // namespace cli

@@ -16,11 +16,13 @@
 #include <vector>
 #include <ostream>
 #include <iomanip>
+#include <colors.hpp>
 #include <helper.hpp>
 #include <exception.hpp>
 
 namespace cli
 {
+
 
 class Command 
 {
@@ -122,9 +124,13 @@ bool Command::operator<(const Command &command) const
  */
 std::ostream& operator<<(std::ostream & os, const Command & command)
 {
-    os << "\t" << std::setw(10) << command.command << "\t";
-    for(auto el : command.argv) os << "[" << el << "] ";
-    os << "\t" << command.description << std::endl;
+    os << LEFT_PAD 
+       << std::setw(30) 
+       << std::left 
+       << _S(command.command)
+       << " ";
+
+    os << command.description;
     return os;
 }
 

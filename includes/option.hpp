@@ -15,6 +15,7 @@
 #include <string>
 #include <map>
 #include <helper.hpp>
+#include <colors.hpp>
 #include <ostream>
 
 namespace cli
@@ -41,7 +42,7 @@ Option::Option(std::string flag, std::string description)
 {
     // process the flag type. if the flag has arguments, then update the required
     // according to <> or [] provided
-    const std::vector<std::string> tokenized = helper::tokenize(flag, std::regex(R"([\s|]+)"));
+    const std::vector<std::string> tokenized = helper::tokenize(flag, std::regex(R"([\s|,]+)"));
 
     this->description = description;
     if (tokenized.size() >= 1)
@@ -79,11 +80,15 @@ bool Option::operator<(const Option &option) const
 
 std::ostream& operator<<(std::ostream & os, const Option & o)
 {
-    os << "\t" << std::setw(7) 
-       << o.flag << " "
-       << (o.readable.length() ? o.readable : "\t") << std::setw(10)
-       << (o.arg.length() ? "[" + o.arg + "]" : "")   
-       << "\t" << o.description;
+    os << LEFT_PAD 
+       << std::setw(30) 
+       << std::left 
+       << _T(o.flag + 
+            (o.readable.length() ? "|"  + o.readable : " ") + 
+            (o.arg.length() ? " <" + o.arg + "> " : "") )
+       << " ";
+
+    os << o.description;
     return os;
 }
 
