@@ -17,6 +17,7 @@
 #include <ostream>
 #include <iomanip>
 #include <helper.hpp>
+#include <exception.hpp>
 
 namespace cli
 {
@@ -55,6 +56,13 @@ public:
     {
         return this->required;
     }
+
+    std::vector<std::string> getargv() const noexcept
+    {
+        return this->argv;
+    }
+
+    bool validate(int size) const;
 
     bool operator<(const Command & command) const;
     friend std::ostream& operator<<(std::ostream & os, const Command & command);
@@ -118,6 +126,11 @@ std::ostream& operator<<(std::ostream & os, const Command & command)
     for(auto el : command.argv) os << "[" << el << "] ";
     os << "\t" << command.description << std::endl;
     return os;
+}
+
+bool Command::validate(int size) const 
+{
+    return (this->required <= size);
 }
 
 }

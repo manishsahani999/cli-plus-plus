@@ -147,40 +147,30 @@ void Commander::parse(int argc, char *argv[])
     }
 
     // Identify and process commands 
-    for(auto i : this->command_args) std::cout << i << "\n";
-    std::cout << "--\n";
-    for(auto i : this->option_args) std::cout << i << "\n";
+    if (this->command_args.size() && 
+        this->commands.find(*this->command_args.begin()) != this->commands.end())
+    {
+        std::string cmd_name = this->command_args.front();
+        auto command = this->commands.find(cmd_name)->first;
 
+        // Update properties and pop out the first element which was command name
+        this->properties.insert({"command", cmd_name});
+        this->command_args.erase(command_args.begin(), command_args.begin() + 1);
 
-    // if (this->args.size() >= 1) 
-    // {
-    //     this->properties.insert({"command", args[0]});
-    //     auto it = this->commands.find(args[0]);
-    //     if (it == this->commands.end()) 
-    //     {
-    //         std::cerr << Static::ExceptionStr::PARSE_CMD_NOT_FOUND << std::endl;
-    //         exit(1);
-    //     }
-    //     // args[0];
-    //     Command command = it->first;
-    //     int argprovided = 0;
-    //     for(int i = 1; i < args.size(); i++) {
-    //         if (args[i].front() == '-') break;
-    //         argprovided++;
-    //     }
-    //     std::cout << argprovided << " " << command.getRequired() << "\n";
-    //     if (argprovided < command.getRequired()) 
-    //     {
-    //         std::cerr << "Invalid args" << std::endl;
-    //         std::cout << command << std::endl;
-    //         exit(1);
-    //     }
-    //     // for(int i = 1; i < args.size(); i++) {
-    //     //     if (args[i].front() == '-') break;
-    //     //     // this->properties.insert({command.})
-    //     // }
-    //     std::cout << command << std::endl;
-    // }
+        //Validate Command args and Update the properties 
+        if (command.validate(this->command_args.size())) 
+        {
+            std::vector<std::string> keys = command.getargv();
+            for(int i = 0; i < this->command_args.size() && i < keys.size(); i++)
+                this->properties.insert({keys[i], this->command_args[i]});
+        }
+        else {
+            std::cout << command << std::endl;
+            throw Exception(Static::ExceptionStr::PARSE_CMD_MISSING_ARG);
+        }
+    }
+    else throw Exception(Static::ExceptionStr::PARSE_CMD_NOT_FOUND);
+    
 }
 
 void Commander::list() const noexcept

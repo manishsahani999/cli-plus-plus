@@ -33,16 +33,17 @@ int32_t main(int argc, char *argv[])
         program.option("-de| --doom [party]", "errored");
         program.command("clone <url> [path]", "clone the repository");
         program.command("list", "list the commands available");
+        program.parse(argc, argv);
     }
     catch (const cli::Exception &e)
     {
         std::cerr << e.what() << '\n';
-        abort();
+        exit(1);
     }
-    program.parse(argc, argv);
+    
 
     cout << program["command"] << endl;
-    // cout << program["version"] << endl;
+    cout << program["url"] << endl;
     
     return 0;
 }
