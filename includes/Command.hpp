@@ -107,10 +107,10 @@ bool Command::operator<(const Command &command) const
 
 /**
  * @brief Overloading the << operator for the Command Class
- * 
- * @param os 
- * @param command 
- * @return std::ostream& 
+ *
+ * @param os
+ * @param command
+ * @return std::ostream&
  */
 std::ostream& operator<<(std::ostream & os, const Command & command)
 {
