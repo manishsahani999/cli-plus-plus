@@ -146,6 +146,14 @@ void Commander::parse(int argc, char *argv[])
         std::exit(0);
     }
 
+    // This is to obey the legacy of -h and --help usage if --version of -v 
+    if (this->option_args.size() && this->properties.find(Static::VERSION) != this->properties.end()
+            && (*this->option_args.begin() == "--help" || *this->option_args.begin() == "-h" ))
+    {
+        this->list();
+        std::exit(0);
+    }
+
     // Identify and process commands 
     if (this->command_args.size() && 
         this->commands.find(*this->command_args.begin()) != this->commands.end())
@@ -170,7 +178,7 @@ void Commander::parse(int argc, char *argv[])
         }
     }
     else throw Exception(Static::ExceptionStr::PARSE_CMD_NOT_FOUND);
-    
+
 }
 
 void Commander::list() const noexcept

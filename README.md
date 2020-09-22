@@ -42,3 +42,5 @@ int32_t main(int argc, char *argv[])
     return 0;
 }
 ```
+
+![image](docs/terminal.png)
