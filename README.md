@@ -68,6 +68,11 @@ std::cout << program["party"];
 #### Default option value
 You can specify a default value for an option which takes a value.
 
+```c++
+program.option("-c, --cool <name>", "with a required parameter", "vim");
+```
+
+### Example 
 
 ```c++
 

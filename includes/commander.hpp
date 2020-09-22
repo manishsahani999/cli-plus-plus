@@ -108,7 +108,8 @@ void Commander::version(const std::string & version,
  * @param description 
  * @throw cli::Exception 
  */
-void Commander::option(const std::string & flag, const std::string & description)
+void Commander::option(const std::string & flag, 
+                       const std::string & description)
 {
     // check if the flag is empty or not, in any case flag must not be empty
     if (!flag.length()) throw Exception(errstr::option::FLAG_EMPTY);
