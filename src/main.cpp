@@ -38,7 +38,7 @@ int32_t main(int argc, char *argv[])
         program.command("init", "initiate the management of dotfiles.");
 
         program.option("-m <message>", "provide a message to the commit");
-        // program.option("-b, --boom", "with aliases");
+        program.option("-b, --boom", "with aliases");
         // program.option("-c, --cool <name>", "with required");
         // program.option("-d|--doom [party]", "optional");
         // program.option("-de| --doom [party]", "errored");

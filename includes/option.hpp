@@ -45,6 +45,13 @@ class Option
     int present = 0;
 
     /**
+     * @brief Usuage string for the option, same as the string provided at the 
+     * runtime.
+     * 
+     */
+    std::string usuage;
+
+    /**
      * @brief primary identifier for the option, it can be both, but if small f
      * -lag (ex - '-d') is provided it will be given priority over larger  flag 
      * with.
@@ -91,6 +98,15 @@ public:
     bool operator==(const std::string & f) const noexcept;
 
     /**
+     * @brief Overload the == operator according to Option object
+     * 
+     * @param o 
+     * @return true 
+     * @return false 
+     */
+    bool operator==(const Option & o) const noexcept;
+
+    /**
      * @brief Overload the << operator, used for usage listing 
      * 
      * @param os 
@@ -109,17 +125,18 @@ public:
 Option::Option(const std::string & flag, const std::string & description)
 {
     this->description = description;
+    this->usuage = std::regex_replace(flag, std::regex(R"([|]+)"), ", ");
     // process the flag type. if the flag has arguments, then update the requir
     // -ed according to <> or [] provided
     const std::vector<std::string> tokenized = helper::tokenize(flag, 
                                                      std::regex(R"([\s|,]+)"));
     int idx = 0;
-    // check the syntax of the option and build according to it 
+    // check the syntax of the option and build according to it Update the prim
+    // -ary identifer (flag) of this option
     if (tokenized.size() == 0 || (tokenized.size() && 
                                   tokenized[idx].front() != '-')) 
         throw Exception(errstr::option::INVALID_SYNTAX);
-    
-    // Update the primary identifer (flag) of this option
+
     this->flag = tokenized[idx++];
 
     // check the tokens for secondary flag, if present then update the option
@@ -132,7 +149,7 @@ Option::Option(const std::string & flag, const std::string & description)
         throw Exception(errstr::option::INVALID_ALIASES);
     
     // Update the args from the syntax
-    for (; idx < tokenized.size(); idx++)
+    for (; idx < tokenized.size(); idx++) 
     {
         auto arg = helper::process_arg(tokenized[idx]);
         
@@ -154,6 +171,18 @@ bool Option::operator==(const std::string & f) const noexcept
 }
 
 /**
+ * @brief Overload the == operator according to Option object
+ * 
+ * @param o 
+ * @return true 
+ * @return false 
+ */
+bool Option::operator==(const Option & o) const noexcept
+{
+    return (o.flag == this->flag || o.secondary_flag == this->secondary_flag);
+}
+
+/**
  * @brief Overload the << operator, used for usage listing 
  * 
  * @param os 
@@ -165,9 +194,7 @@ std::ostream& operator<<(std::ostream & os, const Option & o)
     os << LEFT_PAD 
        << std::setw(30) 
        << std::left 
-       << _T(o.flag + 
-            (o.secondary_flag.length() ? "|"  + o.secondary_flag : " ") + " ");
-            // + (o.arg.length() ? " <" + o.arg + "> " : "") )
+       << _T(o.usuage + " ");
 
     os << o.description;
     return os;
