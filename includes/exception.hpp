@@ -18,6 +18,15 @@ namespace cli
     namespace properties
     {
         static std::string VERSION = "version";
+        static std::string command = "command";
+    }
+
+    namespace df
+    {
+        static std::string version_flag = "-v, --version";
+        static std::string version_description = "Display programs for version";
+        static std::string help_flag = "-h|--help";
+        static std::string help_description = "Display this help message";
     }
 
     namespace errstr
@@ -25,6 +34,9 @@ namespace cli
         namespace option
         {
             static std::string FLAG_EMPTY = "Option flag cannot be empty, Provided an empty string.";
+            static std::string INVALID_SYNTAX = "Invalid Syntax for the option";
+            static std::string INVALID_ALIASES = "Invalid aliases, only two flags per options are allowed";
+            static std::string INVALID_ARG = "Invalid argument provided";
         }
 
         namespace parse
