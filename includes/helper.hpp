@@ -22,6 +22,26 @@
 namespace cli
 {
 
+namespace properties
+{
+    static std::string VERSION = "version";
+    static std::string command = "command";
+}
+
+/**
+ * @brief Default strings and placeholders for overall app are declared here
+ * 
+ */
+namespace df
+{
+    static std::string version_flag = "-v, --version";
+    static std::string version_description = "Display programs for version";
+    static std::string help_flag = "-h|--help";
+    static std::string help_description = "Display this help message";
+}
+
+
+
 namespace helper
 {
 
