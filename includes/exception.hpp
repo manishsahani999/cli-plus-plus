@@ -37,6 +37,7 @@ namespace cli
             static std::string INVALID_SYNTAX = "Invalid Syntax for the option";
             static std::string INVALID_ALIASES = "Invalid aliases, only two flags per options are allowed";
             static std::string INVALID_ARG = "Invalid argument provided";
+            static std::string ARG_MISSING = "argument required";
         }
 
         namespace parse

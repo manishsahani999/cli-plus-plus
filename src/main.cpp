@@ -51,6 +51,8 @@ int32_t main(int argc, char *argv[])
         exit(1);
     }
 
+    cout << program["message"] << endl;
+
     if (program["command"] == "init")
     {
         cout << _P("> ") << "Initiating the tracking and management of dotfiles\n";

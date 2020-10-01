@@ -226,10 +226,6 @@ void Commander::parse(int argc, char *argv[])
     // Identify and process commands 
     this->parse_cmd();
 
-    std::cout << "\n";
-    for(auto el : this->option_args) std::cout << el << " \n ";
-    std::cout << "\n";
-
     // Identify and process options 
     this->parse_options();
 }
@@ -339,20 +335,22 @@ void Commander::parse_options()
         for(; i < this->option_args.size(); i++)
         {
             if (this->option_args[i].front() != '-') continue;
-            std::cout << this->option_args[i] << "\n";
+
             Option *option = nullptr;
             // find the flag in the options 
             for (auto & el : this->options) if (el == this->option_args[i]) {
                 option = &el;
-                std::cout << " Hello \n ";
+                std::vector<std::string> args;
+                for(int j = i + 1; j < this->option_args.size() && 
+                                   this->option_args[j].front() != '-'; j++) 
+                    args.push_back(this->option_args[j]);
+
+                option->parse(args);
+                // update properties 
+                auto a = option->get_argv();         
+                std::cout << "\n" << *option << std::endl;
                 break;
             }
-            // if (option != nullptr) std::cout << option->getArg() << "\n";
-            // if (it != this->option_args.end() && it->front() != '-') arg = *it;
-            // --it;
-
-            // auto f = this->options.find(flag);
-            // if (f != this->options.end()) std::cout << f->first << std::endl;
         }
     }
     exit(0);

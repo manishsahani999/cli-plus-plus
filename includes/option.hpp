@@ -17,6 +17,7 @@
 #include <ostream>
 #include <helper.hpp>
 #include <colors.hpp>
+#include <utility>
 
 namespace cli
 {
@@ -87,6 +88,14 @@ public:
     //  Options's api for validating and updating at runtime                 //
     //                                                                       //
     //===-----------------------------------------------------------------===//
+
+    void parse(std::vector<std::string> & args);
+
+    /**
+     * @brief Get a copy of option's arguments vector. 
+     *
+     */
+    std::vector<std::pair<std::string, std::string>> get_argv() const;
     
     /**
      * @brief Overload the == operator, to check with string 
@@ -156,6 +165,19 @@ Option::Option(const std::string & flag, const std::string & description)
         this->args.push_back({arg.first, ""});
         this->required += arg.second, this->maxargs++;
     }
+}
+
+void Option::parse(std::vector<std::string> & args)
+{
+    if (args.size() < this->required) throw Exception(errstr::option::ARG_MISSING);
+    
+    for(int i = 0; i < args.size() && i < this->maxargs; i++) 
+        this->args[i].second = args[i];
+}
+
+std::vector<std::pair<std::string, std::string>> Option::get_argv() const
+{
+    return this->args;
 }
 
 /**
