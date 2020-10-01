@@ -319,10 +319,10 @@ void Commander::parse_cmd()
             }
             else {
                 std::cout << command << std::endl;
-                throw Exception(Static::ExceptionStr::PARSE_CMD_MISSING_ARG);
+                throw Exception(errstr::parse::CMD_MISSING_ARG);
             }
         }
-        else throw Exception(Static::ExceptionStr::PARSE_CMD_NOT_FOUND);
+        else throw Exception(errstr::parse::CMD_NOT_FOUND);
     }
     
 }

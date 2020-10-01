@@ -94,6 +94,7 @@ public:
     /**
      * @brief Get a copy of option's arguments vector. 
      *
+     * @return std::vector<std::pair<std::string, std::string>> 
      */
     std::vector<std::pair<std::string, std::string>> get_argv() const;
     
@@ -175,6 +176,11 @@ void Option::parse(std::vector<std::string> & args)
         this->args[i].second = args[i];
 }
 
+/**
+ * @brief Get a copy of option's arguments vector. 
+ * 
+ * @return std::vector<std::pair<std::string, std::string>> 
+ */
 std::vector<std::pair<std::string, std::string>> Option::get_argv() const
 {
     return this->args;
