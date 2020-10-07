@@ -1,4 +1,6 @@
+![banner](/docs/banner.jpg)
 # cli-plus-plus
+
 The complete solution for c++ command line interface, inspired by [ruby's commander](https://github.com/commander-rb/commander) and  [node.js's commander](https://github.com/tj/commander.js).
 
 Cli++ provides a framework for building cli apps with expressive, elegant syntax. I’ve already laid the foundation — freeing you to create awesome cli applications without sweating the small things.
