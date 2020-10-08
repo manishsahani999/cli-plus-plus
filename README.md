@@ -1,5 +1,4 @@
 ![banner](/docs/banner.jpg)
-# cli-plus-plus
 
 The complete solution for c++ command line interface, inspired by [ruby's commander](https://github.com/commander-rb/commander) and  [node.js's commander](https://github.com/tj/commander.js).
 
